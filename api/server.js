@@ -1,9 +1,9 @@
 const express = require('express'); 
 const cors = require('cors'); 
 const app = express();
-const PORT = 3000; // puerto en el que va a correr el servidor
+const PORT = 3000
 
-app.use(cors()); // Permite que el Front se comunique con el Back
+app.use(cors());
 app.use(express.json());
 
 let tasks = [
@@ -32,12 +32,12 @@ app.post('/tasks', (req, res) => {
 
 // DELETE - para eliminar las tareas del arreglo por id
 app.delete('/tasks/:id', (req, res) => {
-  const id = parseInt(req.params.id); // Obtener el ID de la tarea a eliminar
-  tasks = tasks.filter(t => t.id !== id); // Eliminar la tarea del arreglo
-  res.status(204).send(); // Responder con 204 No Content para indicar que la eliminación fue exitosa
+  const id = parseInt(req.params.id);
+  tasks = tasks.filter(t => t.id !== id); 
+  res.status(204).send();
 });
 
-// Iniciar el servidor
+// para iniciar el servidor
 app.listen(PORT, () => {
   console.log(`To Do List API corriendo en http://localhost:${PORT}`);
 });
