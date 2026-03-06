@@ -1,0 +1,18 @@
+body {
+    font-family: sans-serif;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    padding: 5px;
+}
+
+#empty-message {
+    color: gray;
+    font-style: italic;
+}
