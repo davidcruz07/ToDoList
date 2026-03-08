@@ -1,15 +1,23 @@
 body {
     font-family: sans-serif;
-    max-width: 400px;
-    margin: 20px auto;
+    margin: 0;
+    padding: 0;
 }
 
-.task-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    border-bottom: 1px solid #eee;
-    padding: 5px;
+.completed {
+    text-decoration: line-through;
+    color: #9CA3AF;
+}
+
+input[type=checkbox]:checked + label span:first-of-type {
+    background-color: #6366f1;
+    border-color: #6366f1;
+    color: #fff;
+}
+
+input[type=checkbox]:checked + label span:nth-of-type(2) {
+    text-decoration: line-through;
+    color: #9CA3AF;
 }
 
 #empty-message {

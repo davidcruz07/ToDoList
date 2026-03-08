@@ -3,19 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css"> 
     <title>To Do List</title>
-
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h2>Lista de Cosas Por Hacer</h2>
-    
-    <input type="text" id="taskInput" placeholder="Nueva tarea...">
-    <button onclick="addTask()">Agregar</button>
+<body class="bg-gray-100 font-medium">
 
-    <div id="taskList"></div>
-    <p id="empty-message" style="display: none;">No hay tareas pendientes.</p>
+    <div class="flex items-center justify-center min-h-screen w-full px-4">
+        
+        <div class="max-w-full p-8 bg-white rounded-lg shadow-lg w-96">
+            
+            <div class="flex items-center mb-6">
+                <svg class="h-8 w-8 text-indigo-500 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <h4 class="font-semibold ml-3 text-lg text-gray-800">Lista de Tareas</h4>
+            </div>
 
+            <div id="taskList" class="space-y-1">
+                </div>
+
+            <p id="empty-message" class="text-gray-400 italic text-sm text-center my-4" style="display: none;">
+                No hay tareas pendientes.
+            </p>
+
+            <div class="flex items-center w-full h-10 px-2 mt-4 text-sm font-medium rounded hover:bg-gray-50 border border-transparent focus-within:border-indigo-200 transition-all">
+                <button onclick="addTask()" class="text-indigo-500 hover:text-indigo-600">
+                    <svg class="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                </button>
+                <input 
+                    id="taskInput" 
+                    type="text" 
+                    placeholder="Añadir una nueva tarea..."
+                    class="flex-grow h-8 ml-4 bg-transparent focus:outline-none font-medium text-gray-600"
+                    onkeypress="if(event.key === 'Enter') addTask()"
+                >
+            </div>
+
+        </div>
+        </div>
 
     <script src="functions.js"></script>
 </body>
