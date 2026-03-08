@@ -1,7 +1,7 @@
 const express = require('express'); 
 const cors = require('cors'); 
 const app = express();
-const PORT = 3000
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -35,6 +35,18 @@ app.delete('/tasks/:id', (req, res) => {
   const id = parseInt(req.params.id);
   tasks = tasks.filter(t => t.id !== id); 
   res.status(204).send();
+});
+
+// PATCH - para actualizar el estado de las tareas por id
+app.patch('/tasks/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const task = tasks.find(t => t.id === id);
+  if (task) {
+    task.completed = req.body.completed;
+    res.json(task);
+  } else {
+    res.status(404).json({ message: 'Tarea no encontrada' });
+  }
 });
 
 // para iniciar el servidor
