@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/tasks';
+const API_URL = 'https://todolist-f86v.onrender.com/tasks';
 
 window.onload = fetchTasks;
 
@@ -80,14 +80,14 @@ async function deleteTask(id) {
     fetchTasks();
 }
 
-// Seleccionamos todos los checkboxes de las tareas
+// para escucar los cambios en los checkbox de las tareas
 document.addEventListener('change', async (e) => {
     if (e.target.classList.contains('task-checkbox')) {
         const taskId = e.target.getAttribute('data-id');
         const isCompleted = e.target.checked;
 
         try {
-            // Llamada a tu API de Express
+
             const response = await fetch(`${API_URL}/${taskId}`, {
                 method: 'PATCH',
                 headers: {
@@ -98,7 +98,7 @@ document.addEventListener('change', async (e) => {
 
             if (response.ok) {
                 console.log('Tarea actualizada con éxito');
-                fetchTasks(); // Refrescamos para que se aplique el estilo de completado
+                fetchTasks();
             }
         } catch (error) {
             console.error('Error al actualizar la tarea:', error);
