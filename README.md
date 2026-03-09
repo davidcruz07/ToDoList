@@ -18,8 +18,3 @@ Express.js: Framework minimalista utilizado para construir la API REST, gestiona
 
 Tailwind CSS: Framework de utilidades para el diseño visual, implementando un contenedor centrado y responsivo mediante Flexbox.
 
-⚙️ Funcionalidades Técnicas
--------------------------------------------------------------------------------------------------------------------------
-Arquitectura desacoplada: El frontend y el backend viven en servidores independientes (GitHub Pages y Render).
-
-API RESTful: Implementación de métodos HTTP para la gestión de las tareas.
