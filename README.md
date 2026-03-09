@@ -1,1 +1,22 @@
-Aún no la he hosteado, por eso no he puesto el link.
+📝 To-Do List
+Aplicación de gestión de tareas que utiliza una arquitectura de cliente-servidor para el manejo de datos en tiempo real.
+-------------------------------------------------------------------------------------------------------------------------
+🌐 Link de la página hosteada:
+Frontend: https://davidcruz07.github.io/ToDoList/
+
+API (Backend): Desplegada en Render.
+-------------------------------------------------------------------------------------------------------------------------
+🛠️ Tecnologías del Ecosistema
+Este proyecto integra las siguientes herramientas clave:
+
+Node.js: Entorno de ejecución para JavaScript en el lado del servidor que permite manejar procesos asíncronos de forma eficiente.
+
+Express.js: Framework minimalista utilizado para construir la API REST, gestionar rutas (endpoints) y manejar el middleware de CORS para la comunicación segura entre el dominio de GitHub y Render.
+
+Tailwind CSS: Framework de utilidades para el diseño visual, implementando un contenedor centrado y responsivo mediante Flexbox.
+
+-------------------------------------------------------------------------------------------------------------------------
+⚙️ Funcionalidades Técnicas
+Arquitectura desacoplada: El frontend y el backend viven en servidores independientes (GitHub Pages y Render).
+
+API RESTful: Implementación de métodos HTTP para la gestión de las tareas.
