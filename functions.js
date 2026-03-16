@@ -15,6 +15,7 @@ async function fetchTasks() {
             
             // para esconder el login form
             document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('user-info').classList.remove('hidden');
 
             renderTasks(tasks);
         } else if (res.status === 401) {
