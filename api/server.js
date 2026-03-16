@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,7 +21,7 @@ let tasks = [
   { id: 5, title: "Hacer la tarea de testing", completed: false }
 ];
 
-// LOGIN - Genera la cookie de sesión
+// LOGIN - genera la cookie de sesión
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     if (email === "josedcm9@gmail.com" && password === "david123456") {
@@ -54,7 +55,7 @@ app.get('/tasks', (req, res) => {
     res.json(tasks);
 });
 
-// POST - Crear tarea
+// POST - crear tarea
 app.post('/tasks', (req, res) => {
     if (!req.cookies.session_id) return res.status(401).send();
     const newTask = { id: Date.now(), title: req.body.title, completed: false };
@@ -62,7 +63,7 @@ app.post('/tasks', (req, res) => {
     res.status(201).json(newTask);
 });
 
-// DELETE - Borrar tarea
+// DELETE - borrar tarea
 app.delete('/tasks/:id', (req, res) => {
     if (!req.cookies.session_id) return res.status(401).send();
     const id = parseInt(req.params.id);
@@ -70,7 +71,7 @@ app.delete('/tasks/:id', (req, res) => {
     res.status(204).send();
 });
 
-// PATCH - Actualizar estado
+// PATCH - actualizar estado
 app.patch('/tasks/:id', (req, res) => {
     if (!req.cookies.session_id) return res.status(401).send();
     const id = parseInt(req.params.id);
