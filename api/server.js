@@ -40,8 +40,8 @@ app.post('/login', (req, res) => {
 app.post('/logout', (req, res) => {
     res.clearCookie('session_id', {
         httpOnly: true,
-        secure: false, 
-        sameSite: 'lax'
+        secure: true, 
+        sameSite: 'none'
     }); 
     console.log("Sesión cerrada y cookie eliminada.");
     res.json({ message: "Sesión cerrada correctamente" });
