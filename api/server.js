@@ -1,10 +1,16 @@
-const express = require('express'); 
-const cors = require('cors'); 
+const express = require('express');
+const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+
+// configuracion de cors para permitir cookies desde el frontend
+app.use(cors({
+    origin: 'https://davidcruz07.github.io/ToDoList/', 
+    credentials: true               
+}));
 
 let tasks = [
   { id: 1, title: "Hacer la tarea de frontendddd", completed: false },
@@ -14,43 +20,67 @@ let tasks = [
   { id: 5, title: "Hacer la tarea de testing", completed: false }
 ];
 
-// GET - para obtener todas las tareas del arreglo.
+// LOGIN - Genera la cookie de sesión
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+    if (email === "josedcm9@gmail.com" && password === "david123456") {
+        res.cookie('session_id', 'user', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            maxAge: 3600000 // 1 hora
+        });
+        return res.json({ message: "Sesión iniciada correctamente" });
+    }
+    res.status(401).json({ message: "Credenciales inválidas" });
+});
+
+// LOGOUT - borra la cookie en el servidor
+app.post('/logout', (req, res) => {
+    res.clearCookie('session_id', {
+        httpOnly: true,
+        secure: false, 
+        sameSite: 'lax'
+    }); 
+    console.log("Sesión cerrada y cookie eliminada.");
+    res.json({ message: "Sesión cerrada correctamente" });
+});
+
+// GET - obtener tareas
 app.get('/tasks', (req, res) => {
-  res.json(tasks);
+    if (!req.cookies.session_id) {
+        return res.status(401).json({ message: "No autorizado" });
+    }
+    res.json(tasks);
 });
 
-// POST -para crear nuevas tareas y agregarlas al arreglo
+// POST - Crear tarea
 app.post('/tasks', (req, res) => {
-  const newTask = {
-    id: Date.now(),
-    title: req.body.title,
-    completed: req.body.completed || false
-  };
-  tasks.push(newTask);
-  res.status(201).json(newTask);
+    if (!req.cookies.session_id) return res.status(401).send();
+    const newTask = { id: Date.now(), title: req.body.title, completed: false };
+    tasks.push(newTask);
+    res.status(201).json(newTask);
 });
 
-// DELETE - para eliminar las tareas del arreglo por id
+// DELETE - Borrar tarea
 app.delete('/tasks/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  tasks = tasks.filter(t => t.id !== id); 
-  res.status(204).send();
+    if (!req.cookies.session_id) return res.status(401).send();
+    const id = parseInt(req.params.id);
+    tasks = tasks.filter(t => t.id !== id);
+    res.status(204).send();
 });
 
-// PATCH - para actualizar el estado de las tareas por id
+// PATCH - Actualizar estado
 app.patch('/tasks/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const task = tasks.find(t => t.id === id);
-  if (task) {
-    task.completed = req.body.completed;
-    res.json(task);
-  } else {
-    res.status(404).json({ message: 'Tarea no encontrada' });
-  }
+    if (!req.cookies.session_id) return res.status(401).send();
+    const id = parseInt(req.params.id);
+    const task = tasks.find(t => t.id === id);
+    if (task) {
+        task.completed = req.body.completed;
+        res.json(task);
+    } else {
+        res.status(404).send();
+    }
 });
 
-// para iniciar el servidor
-app.listen(PORT, () => {
-  console.log(`To Do List API corriendo en http://localhost:${PORT}`);
-});
-
+app.listen(PORT, () => console.log(`Servidor activo`));

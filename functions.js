@@ -4,12 +4,29 @@ window.onload = fetchTasks;
 
 // para obtener todas las tareas del servidor 
 async function fetchTasks() {
-    const res = await fetch(API_URL);
-    const tasks = await res.json();
-    renderTasks(tasks);
+
+    try {
+        const res = await fetch(API_URL, { 
+            credentials: 'include' 
+        });
+
+        if (res.ok) {
+            const tasks = await res.json();
+            
+            // para esconder el login form
+            document.getElementById('login-form').classList.add('hidden');
+
+            renderTasks(tasks);
+        } else if (res.status === 401) {
+            // si no está autorizado, se muestra el formulario de login
+            document.getElementById('login-form').classList.remove('hidden');
+        }
+    } catch (e) {
+        console.error("Error al conectar:", e);
+    }
 }
 
-// renderizar las tareas en el DOM usando el componente de Tailwind
+// renderizar las tareas en el DOM
 function renderTasks(tasks) {
     const list = document.getElementById('taskList');
     const emptyMsg = document.getElementById('empty-message');
@@ -21,7 +38,6 @@ function renderTasks(tasks) {
         if (emptyMsg) emptyMsg.style.display = 'none';
         
         tasks.forEach(task => {
-            // Creamos un ID único para el HTML (ej: task_17102345)
             const htmlId = `task_${task.id}`;
             
             list.innerHTML += `
@@ -59,50 +75,86 @@ function renderTasks(tasks) {
     }
 }
 
-// para agregar nuevas tareas al servidor
+// agregar tareassss
 async function addTask() {
     const input = document.getElementById('taskInput');
     if (!input.value) return;
-
-    await fetch(API_URL, {
+    const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: input.value, completed: false })
+        body: JSON.stringify({ title: input.value }),
+        credentials: 'include'
     });
-
+    if (res.status === 401) {
+        alert("Debes iniciar sesión para agregar tareas");
+    }
     input.value = '';
     fetchTasks();
 }
 
-// para eliminar tareas del servidor por id
+// eliminar tareas
 async function deleteTask(id) {
-    await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+    const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE', credentials: 'include' });
+    if (res.status === 401) {
+        alert("Debes iniciar sesión para eliminar tareas");
+    }
+    if (!res.ok) {
+        const error = await res.json();
+        alert(error.message);
+    }
     fetchTasks();
 }
 
-// para escucar los cambios en los checkbox de las tareas
+
+// actualizar el estado de las tareas (completado o no)
 document.addEventListener('change', async (e) => {
     if (e.target.classList.contains('task-checkbox')) {
         const taskId = e.target.getAttribute('data-id');
-        const isCompleted = e.target.checked;
-
-        try {
-
-            const response = await fetch(`${API_URL}/${taskId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ completed: isCompleted })
-            });
-
-            if (response.ok) {
-                console.log('Tarea actualizada con éxito');
-                fetchTasks();
-            }
-        } catch (error) {
-            console.error('Error al actualizar la tarea:', error);
-            e.target.checked = !isCompleted;
-        }
+        await fetch(`${API_URL}/${taskId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ completed: e.target.checked }),
+            credentials: 'include'
+        });
+        fetchTasks();
     }
 });
+
+//inicio de sesionnn
+async function login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    const res = await fetch('https://todolist-f86v.onrender.com/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include'
+    });
+
+    if (res.ok) {        
+        location.reload();
+
+    }else if(!password || !email ){
+        alert("Por favor, completa todos los campos");
+    }
+     else {
+        alert("Usuario o contraseña incorrectos");
+    }
+}
+
+// cierre de sesionnn
+async function logout() {
+    try {
+        const res = await fetch('https://todolist-f86v.onrender.com/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+
+        if (res.ok) {
+            location.reload();
+        }
+    } catch (e) {
+        console.error("Error al cerrar sesión:", e);
+    }
+}
