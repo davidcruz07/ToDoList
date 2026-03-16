@@ -9,7 +9,7 @@ app.use(cookieParser());
 
 // configuracion de cors para permitir cookies desde el frontend
 app.use(cors({
-    origin: 'https://davidcruz07.github.io/ToDoList/', 
+    origin: 'https://davidcruz07.github.io', 
     credentials: true               
 }));
 
