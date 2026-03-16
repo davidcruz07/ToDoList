@@ -21,6 +21,7 @@ async function fetchTasks() {
         } else if (res.status === 401) {
             // si no está autorizado, se muestra el formulario de login
             document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('user-info').classList.add('hidden');
         }
     } catch (e) {
         console.error("Error al conectar:", e);
