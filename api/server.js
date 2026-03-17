@@ -28,7 +28,7 @@ app.post('/login', (req, res) => {
     const { email, password } = req.body;
     if (email === "josedcm9@gmail.com" && password === "david123456") {
         const token = jwt.sign(
-            { email: email, campus: 'Hermosillo' }, 
+            { email: email}, 
             SECRET_KEY, 
             { expiresIn: '2h' }
         );
