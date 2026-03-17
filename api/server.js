@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -25,7 +26,12 @@ let tasks = [
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     if (email === "josedcm9@gmail.com" && password === "david123456") {
-        res.cookie('session_id', 'user', {
+        const token = jwt.sign(
+            { email: email, campus: 'Hermosillo' }, 
+            SECRET_KEY, 
+            { expiresIn: '2h' }
+        );
+        res.cookie('session_id', token, {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
