@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const SECRET_KEY = "to_do_list_secret_key";
 
 app.use(express.json());
 app.use(cookieParser());
